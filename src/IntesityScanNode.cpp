@@ -2,17 +2,20 @@
 #include "std_msgs/String.h"
 #include <string>
 #include <sensor_msgs/LaserScan.h>
+#include <std_msgs/Int8MultiArray.h>
 #include <sick_safetyscanners/ExtendedLaserScanMsg.h>
+#include <sick_safetyscanners/RawMicroScanDataMsg.h>
 
-std::string publish_topic, input_topic;
-ros::Publisher intensity_pub;
-ros::Subscriber laser_sub;
+std::string publish_topic, input_topic, raw_topic;
+ros::Publisher intensity_pub, protective_fields;
+//ros::Subscriber laser_sub;
 
 void loadParams(){
   ros::NodeHandle nh_("~");
 
   nh_.getParam("destination_topic", publish_topic);
   nh_.getParam("input_topic", input_topic);
+  nh_.getParam("raw_data_topic", raw_topic);
 }
 
 void laserScanCallback(const sick_safetyscanners::ExtendedLaserScanMsgConstPtr &laser_msg){
@@ -47,6 +50,29 @@ void laserScanCallback(const sick_safetyscanners::ExtendedLaserScanMsgConstPtr &
   intensity_pub.publish(intensity_scan);
 }
 
+void rawDataCallback(const sick_safetyscanners::RawMicroScanDataMsgConstPtr& raw_data){
+  std_msgs::Int8MultiArray zone_intrusion;
+  zone_intrusion.data.resize(2); //Position [0] - protective zone, [1] - warning zone
+  zone_intrusion.data[0] = 0;
+  zone_intrusion.data[1] = 0;
+
+  int array_size = raw_data->measurement_data.number_of_beams;
+  //Protective Zone
+  for (int i=0; i<array_size; i++)
+    if(raw_data->intrusion_data.data[0].flags[i]){
+      zone_intrusion.data[0] = 1;
+      break;
+    }
+
+  //Warning Zone
+  for (int i=0; i<array_size; i++)
+    if(raw_data->intrusion_data.data[1].flags[i]){
+      zone_intrusion.data[1] = 1;
+      break;
+    }
+
+  protective_fields.publish(zone_intrusion);
+}
 
 int main(int argc, char **argv)
 {
@@ -55,8 +81,11 @@ int main(int argc, char **argv)
 
   loadParams();
 
-  intensity_pub = nh.advertise<sensor_msgs::LaserScan>(publish_topic, 1000);
-  laser_sub = nh.subscribe<sick_safetyscanners::ExtendedLaserScanMsg>(input_topic, 1, laserScanCallback);
+  intensity_pub = nh.advertise<sensor_msgs::LaserScan>(publish_topic, 100);
+  protective_fields = nh.advertise<std_msgs::Int8MultiArray>("protective_fileds", 100);
+
+  ros::Subscriber laser_sub = nh.subscribe<sick_safetyscanners::ExtendedLaserScanMsg>(input_topic, 1, laserScanCallback);
+  ros::Subscriber raw_msg = nh.subscribe<sick_safetyscanners::RawMicroScanDataMsg>(raw_topic, 1, rawDataCallback);
 
   ros::spin();
 

@@ -221,6 +221,13 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
+add_executable(
+  intenstiy_scan_node src/IntesityScanNode.cpp
+  )
+
+target_link_libraries(
+    intenstiy_scan_node ${catkin_LIBRARIES}
+    )
 #############
 ## Install ##
 #############

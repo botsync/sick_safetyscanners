@@ -1,0 +1,10 @@
+<launch>
+    <arg name="robot_namespace" default="/"/>
+    <arg name="destination_topic" default="intensity_scans"/>
+    <arg name="input_topic" default="sick_safetyscanners/extended_laser_scan"/>
+
+    <node pkg="sick_safetyscanners" type="intenstiy_scan_node" name="intenstiy_scan_node" output="screen" ns="$(arg robot_namespace)">
+        <param name="destination_topic" value="$(arg robot_namespace)$(arg destination_topic)"/>
+        <param name="input_topic" value="$(arg robot_namespace)$(arg input_topic)"/>
+    </node>
+</launch>

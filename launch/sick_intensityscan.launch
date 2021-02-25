@@ -1,19 +1,20 @@
+<?xml version="1.0" ?>
 <launch>
-    <arg name="robot_namespace" default=""/>
+    <arg name="robot_namespace" default="mag500/"/>
     <arg name="destination_topic" default="intensity_scans"/>
     <arg name="input_topic" default="extended_laser_scan"/>
     <arg name="raw_data_topic" default="raw_data"/>
 
     <node pkg="sick_safetyscanners" type="intenstiy_scan_node" name="intenstiy_scan_node" output="screen" ns="$(arg robot_namespace)/front_sick_safetyscanner">
-        <param name="destination_topic" value="$(arg destination_topic)"/>
-        <param name="input_topic" value="$(arg input_topic)"/>
-        <param name="raw_data_topic" value="$(arg raw_data_topic)"/>
+        <param name="destination_topic" value="front/$(arg destination_topic)"/>
+        <param name="input_topic" value="/mag500/front_extended_laser_scan"/>
+        <param name="raw_data_topic" value="/mag500/front_raw_data"/>
     </node>
 
-    <node pkg="sick_safetyscanners" type="intenstiy_scan_node" name="intenstiy_scan_node" output="screen" ns="$(arg robot_namespace)/back_sick_safetyscanner">
-        <param name="destination_topic" value="$(arg destination_topic)"/>
-        <param name="input_topic" value="$(arg input_topic)"/>
-        <param name="raw_data_topic" value="$(arg raw_data_topic)"/>
+<!--    <node pkg="sick_safetyscanners" type="intenstiy_scan_node" name="intenstiy_scan_node" output="screen" ns="$(arg robot_namespace)/back_sick_safetyscanner">
+        <param name="destination_topic" value="back/$(arg destination_topic)"/>
+        <param name="input_topic" value="/mag500/back/extended_laser_scan"/>
+        <param name="raw_data_topic" value="/mag500/back/raw_data"/>
     </node>
-
+-->
 </launch>

@@ -1,5 +1,5 @@
-sensor_ip: 10.8.0.2
-host_ip: 10.8.0.6
+sensor_ip: 10.1.0.5
+host_ip: 10.1.0.4
 host_udp_port: 0
 frame_id: lidar_1
 skip: 0

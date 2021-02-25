@@ -222,12 +222,22 @@ target_link_libraries(${PROJECT_NAME}_node
 )
 
 add_executable(
-  intenstiy_scan_node src/IntesityScanNode.cpp
+  intensity_scan_node src/IntesityScanNode.cpp
   )
 
 target_link_libraries(
-    intenstiy_scan_node ${catkin_LIBRARIES}
+    intensity_scan_node ${catkin_LIBRARIES}
     )
+add_dependencies( intensity_scan_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+
+add_executable(
+  sick_safety_node src/SickSafety.cpp
+  )
+
+target_link_libraries(
+    sick_safety_node ${catkin_LIBRARIES}
+    )
+
 #############
 ## Install ##
 #############

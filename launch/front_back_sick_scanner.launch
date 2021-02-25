@@ -4,14 +4,16 @@
     <arg name="frame_id_front" default="lidar1"/>
     <arg name="frame_id_back" default="lidar2"/>
 
-    <node pkg="sick_safetyscanners" type="sick_safetyscanners_node" name="sick_safetyscanners" output="screen" ns="front_sick_safetyscanner">
+    <node pkg="sick_safetyscanners" type="sick_safetyscanners_node" name="lidar1" output="screen" ns="mag500/front">
         <rosparam file="$(find sick_safetyscanners)/config/front_sick_params.yaml" command="load"/>
         <param name="frame_id" type="string" value="$(arg tf_prefix)$(arg frame_id_front)" />
+	<remap from="scan" to="scan1" />
     </node>
 
-    <node pkg="sick_safetyscanners" type="sick_safetyscanners_node" name="sick_safetyscanners" output="screen" ns="back_sick_safetyscanner">
+    <node pkg="sick_safetyscanners" type="sick_safetyscanners_node" name="lidar2" output="screen" ns="mag500/back">
         <rosparam file="$(find sick_safetyscanners)/config/back_sick_params.yaml" command="load"/>
         <param name="frame_id" type="string" value="$(arg tf_prefix)$(arg frame_id_back)" />
+	<remap from="scan" to="scan2" />	
     </node>
 
 </launch>

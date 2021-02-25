@@ -1,5 +1,5 @@
-sensor_ip: 10.8.0.3
-host_ip: 10.8.0.6
+sensor_ip: 10.2.0.5
+host_ip: 10.2.0.4
 host_udp_port: 0
 frame_id: sick_laser
 skip: 0

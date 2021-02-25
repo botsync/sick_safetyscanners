@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="warn_lin_speed" default="0.4"/>
+    <arg name="warn_ang_speed" default="0.3"/>
+    <arg name="front_field_state_topic" default="/mag500/front_sick_safetyscanner/protective_fileds"/>
+    <arg name="back_field_state_topic" default="/mag500/back_sick_safetyscanner/protective_fileds"/>
+
+    <node pkg="sick_safetyscanners" type="sick_safety_node" name="sick_safety_node" output="screen">
+        <param name="warn_lin_speed" value="$(arg warn_lin_speed)"/>
+        <param name="warn_ang_speed" value="$(arg warn_ang_speed)"/>
+        <param name="front_field_state_topic" value="$(arg front_field_state_topic)"/>
+        <param name="back_field_state_topic" value="$(arg back_field_state_topic)"/>
+    </node>
+
+</launch>
